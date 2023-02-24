@@ -10,6 +10,11 @@ public class FieldDrop : MonoBehaviour, IDropHandler
     {
         CardMovement card = eventData.pointerDrag.GetComponent<CardMovement>();
 
-        if (card) card.DefaultParent = transform;
+        if (card)
+        {
+            Destroy(transform.GetChild(0).gameObject);
+            card.DefaultParent = transform;
+        }
+
     }
 }

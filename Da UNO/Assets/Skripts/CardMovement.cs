@@ -22,6 +22,8 @@ public class CardMovement : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         DefaultParent = transform.parent;
 
         transform.SetParent(DefaultParent.parent);
+
+        GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -33,5 +35,6 @@ public class CardMovement : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     public void OnEndDrag(PointerEventData eventData)
     {
         transform.SetParent(DefaultParent);
+        GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 }

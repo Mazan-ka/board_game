@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 5467608752798743411}
   - component: {fileID: 2151826034079696415}
   - component: {fileID: 7095407328014787833}
+  - component: {fileID: 2761410178885163276}
+  - component: {fileID: 1631502487135623003}
   m_Layer: 5
   m_Name: CardPrefub
   m_TagString: Untagged
@@ -89,3 +91,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c83a7ca7d986e384fb9ebd482dd6e7d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DefaultParent: {fileID: 0}
+--- !u!225 &2761410178885163276
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6072467519669089061}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &1631502487135623003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6072467519669089061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bb4251e4edbb104489f62a4e5f6fc3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Logo: {fileID: 0}
