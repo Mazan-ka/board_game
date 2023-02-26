@@ -13,6 +13,7 @@ public class CardMovement : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     void Awake()
     {
         MainCamera = Camera.allCameras[0];
+        GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 
     public void OnBeginDrag(PointerEventData eventData)

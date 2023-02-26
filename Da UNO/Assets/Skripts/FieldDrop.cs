@@ -15,6 +15,5 @@ public class FieldDrop : MonoBehaviour, IDropHandler
             Destroy(transform.GetChild(0).gameObject);
             card.DefaultParent = transform;
         }
-
     }
 }
