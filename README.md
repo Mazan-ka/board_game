@@ -60,6 +60,10 @@
 ## Use case диаграмма
 ![use_case](https://user-images.githubusercontent.com/80702083/222981384-89fd3dd2-1e15-4f47-9e67-d7a107273e61.png)
 
+## Диаграмма взаимодействия
+![aris_](https://user-images.githubusercontent.com/80702083/223046106-1f650c1c-ebd2-4960-a5e9-4c0e3c4ad482.png)
+
+
 
 
 
