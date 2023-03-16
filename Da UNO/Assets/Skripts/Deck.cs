@@ -9,17 +9,13 @@ public struct Card
     public int Number;
     public string Color;
     public string Logo;
-    public bool Draw4;
-    public bool Choose;
 
     //Constructor for struct Card
     //It needs to initialing all atributes
-    public Card(int number, string color, bool draw4, bool choose, string logo)
+    public Card(int number, string color, string logo)
     {
         Number = number;
         Color = color;
-        Draw4 = draw4;
-        Choose = choose;
         Logo = logo;
     }
 }
@@ -48,6 +44,10 @@ public class Deck : MonoBehaviour
     private int INeedCard = 0;
     public int TurnTimer;
     public bool Revers;
+    public bool Skip;
+    public bool Draw2;
+    public bool Draw4;
+    public bool Choose;
     public TextMeshProUGUI Timer;
 
     void Awake()
@@ -64,122 +64,122 @@ public class Deck : MonoBehaviour
         Game.Op_7 = new List<Card>();
         Game.Player = new List<Card>();
         //blue 0-9
-        Game.Deck.Add(new Card(0, "blue", false, false, "Sprites/UNO/uno_blue0"));
-        Game.Deck.Add(new Card(1, "blue", false, false, "Sprites/UNO/uno_blue1"));
-        Game.Deck.Add(new Card(1, "blue", false, false, "Sprites/UNO/uno_blue1"));
-        Game.Deck.Add(new Card(2, "blue", false, false, "Sprites/UNO/uno_blue2"));
-        Game.Deck.Add(new Card(2, "blue", false, false, "Sprites/UNO/uno_blue2"));
-        Game.Deck.Add(new Card(3, "blue", false, false, "Sprites/UNO/uno_blue3"));
-        Game.Deck.Add(new Card(3, "blue", false, false, "Sprites/UNO/uno_blue3"));
-        Game.Deck.Add(new Card(4, "blue", false, false, "Sprites/UNO/uno_blue4"));
-        Game.Deck.Add(new Card(4, "blue", false, false, "Sprites/UNO/uno_blue4"));
-        Game.Deck.Add(new Card(5, "blue", false, false, "Sprites/UNO/uno_blue5"));
-        Game.Deck.Add(new Card(5, "blue", false, false, "Sprites/UNO/uno_blue5"));
-        Game.Deck.Add(new Card(6, "blue", false, false, "Sprites/UNO/uno_blue6"));
-        Game.Deck.Add(new Card(6, "blue", false, false, "Sprites/UNO/uno_blue6"));
-        Game.Deck.Add(new Card(7, "blue", false, false, "Sprites/UNO/uno_blue7"));
-        Game.Deck.Add(new Card(7, "blue", false, false, "Sprites/UNO/uno_blue7"));
-        Game.Deck.Add(new Card(8, "blue", false, false, "Sprites/UNO/uno_blue8"));
-        Game.Deck.Add(new Card(8, "blue", false, false, "Sprites/UNO/uno_blue8"));
-        Game.Deck.Add(new Card(9, "blue", false, false, "Sprites/UNO/uno_blue9"));
-        Game.Deck.Add(new Card(9, "blue", false, false, "Sprites/UNO/uno_blue9"));
+        Game.Deck.Add(new Card(0, "blue", "Sprites/UNO/uno_blue0"));
+        Game.Deck.Add(new Card(1, "blue", "Sprites/UNO/uno_blue1"));
+        Game.Deck.Add(new Card(1, "blue", "Sprites/UNO/uno_blue1"));
+        Game.Deck.Add(new Card(2, "blue", "Sprites/UNO/uno_blue2"));
+        Game.Deck.Add(new Card(2, "blue", "Sprites/UNO/uno_blue2"));
+        Game.Deck.Add(new Card(3, "blue", "Sprites/UNO/uno_blue3"));
+        Game.Deck.Add(new Card(3, "blue", "Sprites/UNO/uno_blue3"));
+        Game.Deck.Add(new Card(4, "blue", "Sprites/UNO/uno_blue4"));
+        Game.Deck.Add(new Card(4, "blue", "Sprites/UNO/uno_blue4"));
+        Game.Deck.Add(new Card(5, "blue", "Sprites/UNO/uno_blue5"));
+        Game.Deck.Add(new Card(5, "blue", "Sprites/UNO/uno_blue5"));
+        Game.Deck.Add(new Card(6, "blue", "Sprites/UNO/uno_blue6"));
+        Game.Deck.Add(new Card(6, "blue", "Sprites/UNO/uno_blue6"));
+        Game.Deck.Add(new Card(7, "blue", "Sprites/UNO/uno_blue7"));
+        Game.Deck.Add(new Card(7, "blue", "Sprites/UNO/uno_blue7"));
+        Game.Deck.Add(new Card(8, "blue", "Sprites/UNO/uno_blue8"));
+        Game.Deck.Add(new Card(8, "blue", "Sprites/UNO/uno_blue8"));
+        Game.Deck.Add(new Card(9, "blue", "Sprites/UNO/uno_blue9"));
+        Game.Deck.Add(new Card(9, "blue", "Sprites/UNO/uno_blue9"));
         //red 0-9
-        Game.Deck.Add(new Card(0, "red", false, false, "Sprites/UNO/uno_red0"));
-        Game.Deck.Add(new Card(1, "red", false, false, "Sprites/UNO/uno_red1"));
-        Game.Deck.Add(new Card(1, "red", false, false, "Sprites/UNO/uno_red1"));
-        Game.Deck.Add(new Card(2, "red", false, false, "Sprites/UNO/uno_red2"));
-        Game.Deck.Add(new Card(2, "red", false, false, "Sprites/UNO/uno_red2"));
-        Game.Deck.Add(new Card(3, "red", false, false, "Sprites/UNO/uno_red3"));
-        Game.Deck.Add(new Card(3, "red", false, false, "Sprites/UNO/uno_red3"));
-        Game.Deck.Add(new Card(4, "red", false, false, "Sprites/UNO/uno_red4"));
-        Game.Deck.Add(new Card(4, "red", false, false, "Sprites/UNO/uno_red4"));
-        Game.Deck.Add(new Card(5, "red", false, false, "Sprites/UNO/uno_red5"));
-        Game.Deck.Add(new Card(5, "red", false, false, "Sprites/UNO/uno_red5"));
-        Game.Deck.Add(new Card(6, "red", false, false, "Sprites/UNO/uno_red6"));
-        Game.Deck.Add(new Card(6, "red", false, false, "Sprites/UNO/uno_red6"));
-        Game.Deck.Add(new Card(7, "red", false, false, "Sprites/UNO/uno_red7"));
-        Game.Deck.Add(new Card(7, "red", false, false, "Sprites/UNO/uno_red7"));
-        Game.Deck.Add(new Card(8, "red", false, false, "Sprites/UNO/uno_red8"));
-        Game.Deck.Add(new Card(8, "red", false, false, "Sprites/UNO/uno_red8"));
-        Game.Deck.Add(new Card(9, "red", false, false, "Sprites/UNO/uno_red9"));
-        Game.Deck.Add(new Card(9, "red", false, false, "Sprites/UNO/uno_red9"));
+        Game.Deck.Add(new Card(0, "red", "Sprites/UNO/uno_red0"));
+        Game.Deck.Add(new Card(1, "red", "Sprites/UNO/uno_red1"));
+        Game.Deck.Add(new Card(1, "red", "Sprites/UNO/uno_red1"));
+        Game.Deck.Add(new Card(2, "red", "Sprites/UNO/uno_red2"));
+        Game.Deck.Add(new Card(2, "red", "Sprites/UNO/uno_red2"));
+        Game.Deck.Add(new Card(3, "red", "Sprites/UNO/uno_red3"));
+        Game.Deck.Add(new Card(3, "red", "Sprites/UNO/uno_red3"));
+        Game.Deck.Add(new Card(4, "red", "Sprites/UNO/uno_red4"));
+        Game.Deck.Add(new Card(4, "red", "Sprites/UNO/uno_red4"));
+        Game.Deck.Add(new Card(5, "red", "Sprites/UNO/uno_red5"));
+        Game.Deck.Add(new Card(5, "red", "Sprites/UNO/uno_red5"));
+        Game.Deck.Add(new Card(6, "red", "Sprites/UNO/uno_red6"));
+        Game.Deck.Add(new Card(6, "red", "Sprites/UNO/uno_red6"));
+        Game.Deck.Add(new Card(7, "red", "Sprites/UNO/uno_red7"));
+        Game.Deck.Add(new Card(7, "red", "Sprites/UNO/uno_red7"));
+        Game.Deck.Add(new Card(8, "red", "Sprites/UNO/uno_red8"));
+        Game.Deck.Add(new Card(8, "red", "Sprites/UNO/uno_red8"));
+        Game.Deck.Add(new Card(9, "red", "Sprites/UNO/uno_red9"));
+        Game.Deck.Add(new Card(9, "red", "Sprites/UNO/uno_red9"));
         //green 0-9
-        Game.Deck.Add(new Card(0, "green", false, false, "Sprites/UNO/uno_green0"));
-        Game.Deck.Add(new Card(1, "green", false, false, "Sprites/UNO/uno_green1"));
-        Game.Deck.Add(new Card(1, "green", false, false, "Sprites/UNO/uno_green1"));
-        Game.Deck.Add(new Card(2, "green", false, false, "Sprites/UNO/uno_green2"));
-        Game.Deck.Add(new Card(2, "green", false, false, "Sprites/UNO/uno_green2"));
-        Game.Deck.Add(new Card(3, "green", false, false, "Sprites/UNO/uno_green3"));
-        Game.Deck.Add(new Card(3, "green", false, false, "Sprites/UNO/uno_green3"));
-        Game.Deck.Add(new Card(4, "green", false, false, "Sprites/UNO/uno_green4"));
-        Game.Deck.Add(new Card(4, "green", false, false, "Sprites/UNO/uno_green4"));
-        Game.Deck.Add(new Card(5, "green", false, false, "Sprites/UNO/uno_green5"));
-        Game.Deck.Add(new Card(5, "green", false, false, "Sprites/UNO/uno_green5"));
-        Game.Deck.Add(new Card(6, "green", false, false, "Sprites/UNO/uno_green6"));
-        Game.Deck.Add(new Card(6, "green", false, false, "Sprites/UNO/uno_green6"));
-        Game.Deck.Add(new Card(7, "green", false, false, "Sprites/UNO/uno_green7"));
-        Game.Deck.Add(new Card(7, "green", false, false, "Sprites/UNO/uno_green7"));
-        Game.Deck.Add(new Card(8, "green", false, false, "Sprites/UNO/uno_green8"));
-        Game.Deck.Add(new Card(8, "green", false, false, "Sprites/UNO/uno_green8"));
-        Game.Deck.Add(new Card(9, "green", false, false, "Sprites/UNO/uno_green9"));
-        Game.Deck.Add(new Card(9, "green", false, false, "Sprites/UNO/uno_green9"));
+        Game.Deck.Add(new Card(0, "green", "Sprites/UNO/uno_green0"));
+        Game.Deck.Add(new Card(1, "green", "Sprites/UNO/uno_green1"));
+        Game.Deck.Add(new Card(1, "green", "Sprites/UNO/uno_green1"));
+        Game.Deck.Add(new Card(2, "green", "Sprites/UNO/uno_green2"));
+        Game.Deck.Add(new Card(2, "green", "Sprites/UNO/uno_green2"));
+        Game.Deck.Add(new Card(3, "green", "Sprites/UNO/uno_green3"));
+        Game.Deck.Add(new Card(3, "green", "Sprites/UNO/uno_green3"));
+        Game.Deck.Add(new Card(4, "green", "Sprites/UNO/uno_green4"));
+        Game.Deck.Add(new Card(4, "green", "Sprites/UNO/uno_green4"));
+        Game.Deck.Add(new Card(5, "green", "Sprites/UNO/uno_green5"));
+        Game.Deck.Add(new Card(5, "green", "Sprites/UNO/uno_green5"));
+        Game.Deck.Add(new Card(6, "green", "Sprites/UNO/uno_green6"));
+        Game.Deck.Add(new Card(6, "green", "Sprites/UNO/uno_green6"));
+        Game.Deck.Add(new Card(7, "green", "Sprites/UNO/uno_green7"));
+        Game.Deck.Add(new Card(7, "green", "Sprites/UNO/uno_green7"));
+        Game.Deck.Add(new Card(8, "green", "Sprites/UNO/uno_green8"));
+        Game.Deck.Add(new Card(8, "green", "Sprites/UNO/uno_green8"));
+        Game.Deck.Add(new Card(9, "green", "Sprites/UNO/uno_green9"));
+        Game.Deck.Add(new Card(9, "green", "Sprites/UNO/uno_green9"));
         //yellow 0-9
-        Game.Deck.Add(new Card(0, "yellow", false, false, "Sprites/UNO/uno_yellow0"));
-        Game.Deck.Add(new Card(1, "yellow", false, false, "Sprites/UNO/uno_yellow1"));
-        Game.Deck.Add(new Card(1, "yellow", false, false, "Sprites/UNO/uno_yellow1"));
-        Game.Deck.Add(new Card(2, "yellow", false, false, "Sprites/UNO/uno_yellow2"));
-        Game.Deck.Add(new Card(2, "yellow", false, false, "Sprites/UNO/uno_yellow2"));
-        Game.Deck.Add(new Card(3, "yellow", false, false, "Sprites/UNO/uno_yellow3"));
-        Game.Deck.Add(new Card(3, "yellow", false, false, "Sprites/UNO/uno_yellow3"));
-        Game.Deck.Add(new Card(4, "yellow", false, false, "Sprites/UNO/uno_yellow4"));
-        Game.Deck.Add(new Card(4, "yellow", false, false, "Sprites/UNO/uno_yellow4"));
-        Game.Deck.Add(new Card(5, "yellow", false, false, "Sprites/UNO/uno_yellow5"));
-        Game.Deck.Add(new Card(5, "yellow", false, false, "Sprites/UNO/uno_yellow5"));
-        Game.Deck.Add(new Card(6, "yellow", false, false, "Sprites/UNO/uno_yellow6"));
-        Game.Deck.Add(new Card(6, "yellow", false, false, "Sprites/UNO/uno_yellow6"));
-        Game.Deck.Add(new Card(7, "yellow", false, false, "Sprites/UNO/uno_yellow7"));
-        Game.Deck.Add(new Card(7, "yellow", false, false, "Sprites/UNO/uno_yellow7"));
-        Game.Deck.Add(new Card(8, "yellow", false, false, "Sprites/UNO/uno_yellow8"));
-        Game.Deck.Add(new Card(8, "yellow", false, false, "Sprites/UNO/uno_yellow8"));
-        Game.Deck.Add(new Card(9, "yellow", false, false, "Sprites/UNO/uno_yellow9"));
-        Game.Deck.Add(new Card(9, "yellow", false, false, "Sprites/UNO/uno_yellow9"));
+        Game.Deck.Add(new Card(0, "yellow", "Sprites/UNO/uno_yellow0"));
+        Game.Deck.Add(new Card(1, "yellow", "Sprites/UNO/uno_yellow1"));
+        Game.Deck.Add(new Card(1, "yellow", "Sprites/UNO/uno_yellow1"));
+        Game.Deck.Add(new Card(2, "yellow", "Sprites/UNO/uno_yellow2"));
+        Game.Deck.Add(new Card(2, "yellow", "Sprites/UNO/uno_yellow2"));
+        Game.Deck.Add(new Card(3, "yellow", "Sprites/UNO/uno_yellow3"));
+        Game.Deck.Add(new Card(3, "yellow", "Sprites/UNO/uno_yellow3"));
+        Game.Deck.Add(new Card(4, "yellow", "Sprites/UNO/uno_yellow4"));
+        Game.Deck.Add(new Card(4, "yellow", "Sprites/UNO/uno_yellow4"));
+        Game.Deck.Add(new Card(5, "yellow", "Sprites/UNO/uno_yellow5"));
+        Game.Deck.Add(new Card(5, "yellow", "Sprites/UNO/uno_yellow5"));
+        Game.Deck.Add(new Card(6, "yellow", "Sprites/UNO/uno_yellow6"));
+        Game.Deck.Add(new Card(6, "yellow", "Sprites/UNO/uno_yellow6"));
+        Game.Deck.Add(new Card(7, "yellow", "Sprites/UNO/uno_yellow7"));
+        Game.Deck.Add(new Card(7, "yellow", "Sprites/UNO/uno_yellow7"));
+        Game.Deck.Add(new Card(8, "yellow", "Sprites/UNO/uno_yellow8"));
+        Game.Deck.Add(new Card(8, "yellow", "Sprites/UNO/uno_yellow8"));
+        Game.Deck.Add(new Card(9, "yellow", "Sprites/UNO/uno_yellow9"));
+        Game.Deck.Add(new Card(9, "yellow", "Sprites/UNO/uno_yellow9"));
         //Draw2
-        Game.Deck.Add(new Card(10, "blue", false, false, "Sprites/UNO/uno_blue_plus2"));
-        Game.Deck.Add(new Card(10, "blue", false, false, "Sprites/UNO/uno_blue_plus2"));
-        Game.Deck.Add(new Card(10, "red", false, false, "Sprites/UNO/uno_red_plus2"));
-        Game.Deck.Add(new Card(10, "red", false, false, "Sprites/UNO/uno_red_plus2"));
-        Game.Deck.Add(new Card(10, "green", false, false, "Sprites/UNO/uno_green_plus2"));
-        Game.Deck.Add(new Card(10, "green", false, false, "Sprites/UNO/uno_green_plus2"));
-        Game.Deck.Add(new Card(10, "yellow", false, false, "Sprites/UNO/uno_yellow_plus2"));
-        Game.Deck.Add(new Card(10, "yellow", false, false, "Sprites/UNO/uno_yellow_plus2"));
+        Game.Deck.Add(new Card(10, "blue", "Sprites/UNO/uno_blue_plus2"));
+        Game.Deck.Add(new Card(10, "blue", "Sprites/UNO/uno_blue_plus2"));
+        Game.Deck.Add(new Card(10, "red", "Sprites/UNO/uno_red_plus2"));
+        Game.Deck.Add(new Card(10, "red", "Sprites/UNO/uno_red_plus2"));
+        Game.Deck.Add(new Card(10, "green", "Sprites/UNO/uno_green_plus2"));
+        Game.Deck.Add(new Card(10, "green", "Sprites/UNO/uno_green_plus2"));
+        Game.Deck.Add(new Card(10, "yellow", "Sprites/UNO/uno_yellow_plus2"));
+        Game.Deck.Add(new Card(10, "yellow", "Sprites/UNO/uno_yellow_plus2"));
         //Revers
-        Game.Deck.Add(new Card(11, "blue", false, false, "Sprites/UNO/uno_blue_arrows"));
-        Game.Deck.Add(new Card(11, "blue", false, false, "Sprites/UNO/uno_blue_arrows"));
-        Game.Deck.Add(new Card(11, "red", false, false, "Sprites/UNO/uno_red_arrows"));
-        Game.Deck.Add(new Card(11, "red", false, false, "Sprites/UNO/uno_red_arrows"));
-        Game.Deck.Add(new Card(11, "green", false, false, "Sprites/UNO/uno_green_arrows"));
-        Game.Deck.Add(new Card(11, "green", false, false, "Sprites/UNO/uno_green_arrows"));
-        Game.Deck.Add(new Card(11, "yellow", false, false, "Sprites/UNO/uno_yellow_arrows"));
-        Game.Deck.Add(new Card(11, "yellow", false, false, "Sprites/UNO/uno_yellow_arrows"));
+        Game.Deck.Add(new Card(11, "blue", "Sprites/UNO/uno_blue_arrows"));
+        Game.Deck.Add(new Card(11, "blue", "Sprites/UNO/uno_blue_arrows"));
+        Game.Deck.Add(new Card(11, "red", "Sprites/UNO/uno_red_arrows"));
+        Game.Deck.Add(new Card(11, "red", "Sprites/UNO/uno_red_arrows"));
+        Game.Deck.Add(new Card(11, "green", "Sprites/UNO/uno_green_arrows"));
+        Game.Deck.Add(new Card(11, "green", "Sprites/UNO/uno_green_arrows"));
+        Game.Deck.Add(new Card(11, "yellow", "Sprites/UNO/uno_yellow_arrows"));
+        Game.Deck.Add(new Card(11, "yellow", "Sprites/UNO/uno_yellow_arrows"));
         //Skip
-        Game.Deck.Add(new Card(12, "blue", false, false, "Sprites/UNO/uno_blue_forbid"));
-        Game.Deck.Add(new Card(12, "blue", false, false, "Sprites/UNO/uno_blue_forbid"));
-        Game.Deck.Add(new Card(12, "red", false, false, "Sprites/UNO/uno_red_forbid"));
-        Game.Deck.Add(new Card(12, "red", false, false, "Sprites/UNO/uno_red_forbid"));
-        Game.Deck.Add(new Card(12, "green", false, false, "Sprites/UNO/uno_green_forbid"));
-        Game.Deck.Add(new Card(12, "green", false, false, "Sprites/UNO/uno_green_forbid"));
-        Game.Deck.Add(new Card(12, "yellow", false, false, "Sprites/UNO/uno_yellow_forbid"));
-        Game.Deck.Add(new Card(12, "yellow", false, false, "Sprites/UNO/uno_yellow_forbid"));
+        Game.Deck.Add(new Card(12, "blue", "Sprites/UNO/uno_blue_forbid"));
+        Game.Deck.Add(new Card(12, "blue", "Sprites/UNO/uno_blue_forbid"));
+        Game.Deck.Add(new Card(12, "red", "Sprites/UNO/uno_red_forbid"));
+        Game.Deck.Add(new Card(12, "red", "Sprites/UNO/uno_red_forbid"));
+        Game.Deck.Add(new Card(12, "green", "Sprites/UNO/uno_green_forbid"));
+        Game.Deck.Add(new Card(12, "green", "Sprites/UNO/uno_green_forbid"));
+        Game.Deck.Add(new Card(12, "yellow", "Sprites/UNO/uno_yellow_forbid"));
+        Game.Deck.Add(new Card(12, "yellow", "Sprites/UNO/uno_yellow_forbid"));
         //Choose
-        Game.Deck.Add(new Card(13, "null", false, true, "Sprites/UNO/uno_empty_wild"));
-        Game.Deck.Add(new Card(13, "null", false, true, "Sprites/UNO/uno_empty_wild"));
-        Game.Deck.Add(new Card(13, "null", false, true, "Sprites/UNO/uno_empty_wild"));
-        Game.Deck.Add(new Card(13, "null", false, true, "Sprites/UNO/uno_empty_wild"));
+        Game.Deck.Add(new Card(13, "null", "Sprites/UNO/uno_empty_wild"));
+        Game.Deck.Add(new Card(13, "null", "Sprites/UNO/uno_empty_wild"));
+        Game.Deck.Add(new Card(13, "null", "Sprites/UNO/uno_empty_wild"));
+        Game.Deck.Add(new Card(13, "null", "Sprites/UNO/uno_empty_wild"));
         //Draw4
-        Game.Deck.Add(new Card(14, "null", true, true, "Sprites/UNO/uno_empty_plus4"));
-        Game.Deck.Add(new Card(14, "null", true, true, "Sprites/UNO/uno_empty_plus4"));
-        Game.Deck.Add(new Card(14, "null", true, true, "Sprites/UNO/uno_empty_plus4"));
-        Game.Deck.Add(new Card(14, "null", true, true, "Sprites/UNO/uno_empty_plus4"));
+        Game.Deck.Add(new Card(14, "null", "Sprites/UNO/uno_empty_plus4"));
+        Game.Deck.Add(new Card(14, "null", "Sprites/UNO/uno_empty_plus4"));
+        Game.Deck.Add(new Card(14, "null", "Sprites/UNO/uno_empty_plus4"));
+        Game.Deck.Add(new Card(14, "null", "Sprites/UNO/uno_empty_plus4"));
     }
 
     //Triggerd when mouse down on colider of this GameObject
@@ -229,65 +229,120 @@ public class Deck : MonoBehaviour
 
         TurnTimer = 30;
 
-        if (Game.Deck.Count < 3) ShuffleDeck();
+        if (Game.Deck.Count < 10) ShuffleDeck();
 
-        TurnCounter++;
+        if (Revers)
+        {
+            Debug.Log("Revers");
+            if (Skip)
+            {
+                Debug.Log("Revers Skip");
+                TurnCounter -= 2;
+            }
+            else TurnCounter--;
+        }
+        else
+        {
+            if (Skip)
+            {
+                Debug.Log("Skip");
+                TurnCounter += 2;
+            }
+            else TurnCounter++;
+        }
+
         if (TurnCounter == 0 | TurnCounter == 8) Field.GetComponent<FieldDrop>().SetMyTurn();
+
         if (TurnCounter == 8) TurnCounter = 0;
+        else if (TurnCounter == 9) TurnCounter = 1;
+        else if (TurnCounter == -1) TurnCounter = 7;
+        else if (TurnCounter == -2) TurnCounter = 6;
+
         Debug.Log(TurnCounter);
+
+        if (Draw2)
+        {
+            if(Revers)
+            {
+                if(TurnCounter == 0) GiveCards(2, GetPlayerByTurn(7), GetHandByTurn(TurnCounter));
+                else GiveCards(2, GetPlayerByTurn(TurnCounter), GetHandByTurn(TurnCounter));
+            }
+            else
+            {
+                if (TurnCounter == 7) GiveCards(2, GetPlayerByTurn(0), GetHandByTurn(TurnCounter));
+                else GiveCards(2, GetPlayerByTurn(TurnCounter), GetHandByTurn(TurnCounter));
+            }
+        }
+        else if (Draw4)
+        {
+            if (Revers)
+            {
+                if (TurnCounter == 0) GiveCards(4, GetPlayerByTurn(7), GetHandByTurn(TurnCounter));
+                else GiveCards(4, GetPlayerByTurn(TurnCounter), GetHandByTurn(TurnCounter));
+            }
+            else
+            {
+                if (TurnCounter == 7) GiveCards(4, GetPlayerByTurn(0), GetHandByTurn(TurnCounter));
+                else GiveCards(4, GetPlayerByTurn(TurnCounter), GetHandByTurn(TurnCounter));
+            }
+        }
+
+        Skip = false;
+        Draw2 = false;
+        Draw4 = false;
 
         StartCoroutine(TurnWaiter());
     }
 
-    /*    public Transform GetPlayerByTurn(int turn)
+    public Transform GetPlayerByTurn(int turn)
+    {
+        switch (turn)
         {
-            switch (turn)
-            {
-                case 0:
-                    return Player;
-                case 1:
-                    return Oponent_1;
-                case 2:
-                    return Oponent_2;
-                case 3:
-                    return Oponent_3;
-                case 4:
-                    return Oponent_4;
-                case 5:
-                    return Oponent_5;
-                case 6:
-                    return Oponent_6;
-                case 7:
-                    return Oponent_7;
-                default:
-                    return Player;
-            }
+            case 0:
+                return Player;
+            case 1:
+                return Oponent_1;
+            case 2:
+                return Oponent_2;
+            case 3:
+                return Oponent_3;
+            case 4:
+                return Oponent_4;
+            case 5:
+                return Oponent_5;
+            case 6:
+                return Oponent_6;
+            case 7:
+                return Oponent_7;
+            default:
+                return Player;
         }
+    }
 
-        public List<Card> GetHandByTurn(int turn)
+    public List<Card> GetHandByTurn(int turn)
+    {
+        switch (turn)
         {
-            switch (turn)
-            {
-                case 0:
-                    return Game.Player;
-                case 1:
-                    return Game.Op_1;
-                case 2:
-                    return Game.Op_2;
-                case 3:
-                    return Game.Op_3;
-                case 4:
-                    return Game.Op_4;
-                case 5:
-                    return Game.Op_5;
-                case 6:
-                    return Game.Op_6;
-                case 7:
-                    return Game.Op_7;
-                default :
-                    return Game.Player;
-            }
-        }*/
+            case 0:
+                return Game.Player;
+            case 1:
+                return Game.Op_1;
+            case 2:
+                return Game.Op_2;
+            case 3:
+                return Game.Op_3;
+            case 4:
+                return Game.Op_4;
+            case 5:
+                return Game.Op_5;
+            case 6:
+                return Game.Op_6;
+            case 7:
+                return Game.Op_7;
+            default:
+                return Game.Player;
+        }
+    }
 
     private IEnumerator TurnWaiter()
     {
@@ -302,6 +357,7 @@ public class Deck : MonoBehaviour
                     {
                         Game.Player.RemoveAt(CheckCard(GetCardOnBoard(), Game.Player));
                         INeedCard = 0;
+                        Effect();
                         ChangeTurn();
                     }
                     else if (INeedCard == 3)
@@ -338,6 +394,26 @@ public class Deck : MonoBehaviour
         }
         GiveCards(3, Player, Game.Player);
         ChangeTurn();
+    }
+
+    private void Effect()
+    {
+        Card card = GetCardOnBoard();
+
+        if (card.Number == 10) Draw2 = true;
+        else if (card.Number == 11) Revers = !Revers;
+        else if (card.Number == 12) Skip = true;
+        else if (card.Number == 13) Choose = true;
+        else if (card.Number == 14) { Skip = true; Draw4 = true; Choose = true; }
+    }
+
+    private void EffectBot(Card card)
+    {
+        if (card.Number == 10) Draw2 = true;
+        else if (card.Number == 11) Revers = !Revers;
+        else if (card.Number == 12) Skip = true;
+        else if (card.Number == 13) Choose = true;
+        else if (card.Number == 14) { Skip = true; Draw4 = true; Choose = true; }
     }
 
     private void ShuffleDeck()
@@ -407,6 +483,8 @@ public class Deck : MonoBehaviour
                 newCard.GetComponent<CardVisual>().SetPlayer(Player);
                 newCard.GetComponent<CardVisual>().SetField(Field);
 
+                EffectBot(hand[i]);
+
                 Game.Discard.Add(hand[i]);
                 hand.RemoveAt(i);
                 can = true;
@@ -418,7 +496,9 @@ public class Deck : MonoBehaviour
             for (int i = 0; i < 3; i++)
             {
                 GiveCards(1, whose, hand);
+                
                 int last = hand.Count - 1;
+
                 if (hand[last].Number == cardOnField.Number | hand[last].Color == cardOnField.Color)
                 {
                     Destroy(Field.GetChild(0).gameObject);
@@ -428,6 +508,8 @@ public class Deck : MonoBehaviour
                     newCard.GetComponent<CardVisual>().SelfCard = hand[last];
                     newCard.GetComponent<CardVisual>().SetPlayer(Player);
                     newCard.GetComponent<CardVisual>().SetField(Field);
+
+                    EffectBot(hand[last]);
 
                     Game.Discard.Add(hand[last]);
                     hand.RemoveAt(last);
