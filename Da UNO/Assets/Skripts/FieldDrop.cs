@@ -6,11 +6,29 @@ using static CardMovement;
 
 public class FieldDrop : MonoBehaviour, IDropHandler
 {
+    private bool MyTurn;
+    public Card newCard;
+
+    public void SetMyTurn()
+    {
+        MyTurn = true;
+    }
+
+    public void SetNotMyTurn()
+    {
+        MyTurn = false;
+    }
+
+    public bool GetMyTurn()
+    {
+        return MyTurn;
+    }
+
     public void OnDrop(PointerEventData eventData)
     {
         //Collect info about card on field and card we'd try to drop
         Card recentCard = transform.GetChild(0).GetComponent<CardVisual>().SelfCard;
-        Card newCard = eventData.pointerDrag.GetComponent<CardVisual>().SelfCard;
+        newCard = eventData.pointerDrag.GetComponent<CardVisual>().SelfCard;
 
         CardMovement card = eventData.pointerDrag.GetComponent<CardMovement>();
 
@@ -18,9 +36,13 @@ public class FieldDrop : MonoBehaviour, IDropHandler
         {
             if (card) //if object have been transmitted it became true
             {
-                //Deleting first child in this object hierarchy and change DefaultParent in CardMovement skript
-                Destroy(transform.GetChild(0).gameObject);
-                card.DefaultParent = transform;
+                if (MyTurn)
+                {
+                    //Deleting first child in this object hierarchy and change DefaultParent in CardMovement skript
+                    Destroy(transform.GetChild(0).gameObject);
+                    card.DefaultParent = transform;
+                    MyTurn = false;
+                }
             }
         }
         else return;
