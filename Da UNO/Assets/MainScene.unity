@@ -1237,7 +1237,7 @@ GameObject:
   - component: {fileID: 1511123719}
   m_Layer: 5
   m_Name: Deck
-  m_TagString: Untagged
+  m_TagString: Deck
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1326,6 +1326,10 @@ MonoBehaviour:
   PrefRed: {fileID: 3621863837948945473, guid: 7b0e3c607056ac64799bbb630ecbb40a, type: 3}
   PrefGreen: {fileID: 4989580598117008408, guid: b91635c70f952b844a22c858921bb937, type: 3}
   PrefYellow: {fileID: 3498538382890800989, guid: 252184d2e28f184478e2944b919f5041, type: 3}
+  ChooseBlue: 0
+  ChooseRed: 0
+  ChooseGreen: 0
+  ChooseYellow: 0
   TurnCounter: 0
   TurnTimer: 0
   ChooseTimer: 0
@@ -1334,6 +1338,7 @@ MonoBehaviour:
   Draw2: 0
   Draw4: 0
   Choose: 0
+  BotChoose: 0
   Timer: {fileID: 335916266}
 --- !u!61 &1511123719
 BoxCollider2D:

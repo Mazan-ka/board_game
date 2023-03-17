@@ -8,6 +8,7 @@ TagManager:
   - ChooseRed
   - ChooseGreen
   - ChooseYellow
+  - Deck
   layers:
   - Default
   - TransparentFX
