@@ -32,7 +32,7 @@ public class FieldDrop : MonoBehaviour, IDropHandler
 
         CardMovement card = eventData.pointerDrag.GetComponent<CardMovement>();
 
-        if ((newCard.Number == recentCard.Number) | (newCard.Color == recentCard.Color))
+        if ((newCard.Number == recentCard.Number) | (newCard.Color == recentCard.Color) | newCard.Color == "null")
         {
             if (card) //if object have been transmitted it became true
             {

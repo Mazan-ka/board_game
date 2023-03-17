@@ -40,14 +40,26 @@ public class Deck : MonoBehaviour
     public Transform Player;
     public Transform Field;
     public GameObject pref;
+    public GameObject PrefBlue;
+    public GameObject PrefRed;
+    public GameObject PrefGreen;
+    public GameObject PrefYellow;
+    //make it private
+    public bool ChooseBlue = false;
+    public bool ChooseRed = false;
+    public bool ChooseGreen = false;
+    public bool ChooseYellow = false;
+    //
     public int TurnCounter;
     private int INeedCard = 0;
-    public int TurnTimer;
+    public int TurnTimer = 0;
+    public int ChooseTimer = 0;
     public bool Revers;
     public bool Skip;
     public bool Draw2;
     public bool Draw4;
     public bool Choose;
+    public bool BotChoose;
     public TextMeshProUGUI Timer;
 
     void Awake()
@@ -170,6 +182,10 @@ public class Deck : MonoBehaviour
         Game.Deck.Add(new Card(12, "green", "Sprites/UNO/uno_green_forbid"));
         Game.Deck.Add(new Card(12, "yellow", "Sprites/UNO/uno_yellow_forbid"));
         Game.Deck.Add(new Card(12, "yellow", "Sprites/UNO/uno_yellow_forbid"));
+    }
+
+    private void AddSpecialCards()
+    {
         //Choose
         Game.Deck.Add(new Card(13, "null", "Sprites/UNO/uno_empty_wild"));
         Game.Deck.Add(new Card(13, "null", "Sprites/UNO/uno_empty_wild"));
@@ -188,9 +204,13 @@ public class Deck : MonoBehaviour
     {
         if (TurnCounter == -1)
         {
+            //giving openning card in fied before adding special cards, to evade the mistake
+            GiveCards(1, Field, Game.Discard);
+            //adding special cards to deck
+            AddSpecialCards();
             //giving cards to MyHad
             GiveCards(4, Player, Game.Player);
-            //giving crads to OponentHand (it needs to be new name, rather than newCard)
+            //giving crads to Oponents Hands (it needs to be new name, rather than newCard)
             GiveCards(4, Oponent_1, Game.Op_1);
             GiveCards(4, Oponent_2, Game.Op_2);
             GiveCards(4, Oponent_3, Game.Op_3);
@@ -198,11 +218,10 @@ public class Deck : MonoBehaviour
             GiveCards(4, Oponent_5, Game.Op_5);
             GiveCards(4, Oponent_6, Game.Op_6);
             GiveCards(4, Oponent_7, Game.Op_7);
-            //giving openning card in fied if here no cards, to evade the mistake
-            if (Field.childCount == 0) GiveCards(1, Field, Game.Discard);
 
             ChangeTurn();
         }
+        //if my turn, i can take  3 cards, but 3-rd card is end of turn
         else if (TurnCounter == 0)
         {
             if (INeedCard < 3)
@@ -215,13 +234,13 @@ public class Deck : MonoBehaviour
 
     void Start()
     {
+        //reset some variables ... for fun, idk
         TurnCounter = -1;
         TurnTimer = 30;
+        ChooseTimer = 10;
         Revers = false;
         Timer.text = TurnTimer.ToString();
     }
-
-    //Отрепетировать нормально реакцию на карты, плюс замутить при раздаче игнор карт модификаторов
 
     public void ChangeTurn()
     {
@@ -231,6 +250,7 @@ public class Deck : MonoBehaviour
 
         if (Game.Deck.Count < 10) ShuffleDeck();
 
+        //Turn Manager block:
         if (Revers)
         {
             Debug.Log("Revers");
@@ -260,6 +280,7 @@ public class Deck : MonoBehaviour
 
         Debug.Log(TurnCounter);
 
+        //Draw Manager block:
         if (Draw2)
         {
             if(Revers)
@@ -278,20 +299,337 @@ public class Deck : MonoBehaviour
             if (Revers)
             {
                 if (TurnCounter == 0) GiveCards(4, GetPlayerByTurn(7), GetHandByTurn(TurnCounter));
-                else GiveCards(4, GetPlayerByTurn(TurnCounter), GetHandByTurn(TurnCounter));
+                else GiveCards(4, GetPlayerByTurn(TurnCounter - 1), GetHandByTurn(TurnCounter));
             }
             else
             {
                 if (TurnCounter == 7) GiveCards(4, GetPlayerByTurn(0), GetHandByTurn(TurnCounter));
-                else GiveCards(4, GetPlayerByTurn(TurnCounter), GetHandByTurn(TurnCounter));
+                else GiveCards(4, GetPlayerByTurn(TurnCounter - 1), GetHandByTurn(TurnCounter));
             }
         }
 
+        //Choose Manager block
+        if(BotChoose) //For bot, without animating
+        {
+            int rand = Random.Range(0, 3);
+
+            if (rand == 0) ChooseBlue = true;
+            else if (rand == 1) ChooseRed = true;
+            else if (rand == 2) ChooseGreen = true;
+            else if (rand == 3) ChooseYellow = true;
+
+            //There is function that influence on logic of game
+            ChooseTurn();
+            BotChoose = false;
+        }
+
+        if (Choose) //For human, with animating
+        {
+            Instantiate(PrefBlue, Player.parent, false);
+            Instantiate(PrefRed, Player.parent, false);
+            Instantiate(PrefGreen, Player.parent, false);
+            Instantiate(PrefYellow, Player.parent, false);
+
+            //Because there no ways to do 1 coroutine, then some code and 2 coroutine
+            //I had to call 2 coroutine after 1 and input code directly to 1 coroutine logic
+            StartCoroutine(ChooseWaiter());
+            Choose = false;
+
+            //return because 2 coroutine has already been called by 1 coroutine, and parameters resets ibid
+            return;
+        }
+
+        //Reset parameters, that needs to impact to 1 turn
         Skip = false;
         Draw2 = false;
         Draw4 = false;
+        Choose = false;
 
         StartCoroutine(TurnWaiter());
+    }
+
+    private void ChooseTurn()
+    {
+        if (ChooseBlue)
+        {
+            Destroy(Field.GetChild(0).gameObject);
+
+            GameObject newCard = Instantiate(pref, Field, false);
+            newCard.GetComponent<CardVisual>().SelfCard = new Card(13, "blue", "Sprites/UNO/uno_blue_white");
+            newCard.GetComponent<CardVisual>().SetPlayer(Player);
+            newCard.GetComponent<CardVisual>().SetField(Field);
+            ChooseBlue = false;
+        }
+        else if (ChooseRed)
+        {
+            Destroy(Field.GetChild(0).gameObject);
+
+            GameObject newCard = Instantiate(pref, Field, false);
+            newCard.GetComponent<CardVisual>().SelfCard = new Card(13, "red", "Sprites/UNO/uno_red_wild");
+            newCard.GetComponent<CardVisual>().SetPlayer(Player);
+            newCard.GetComponent<CardVisual>().SetField(Field);
+            ChooseRed = false;
+        }
+        else if (ChooseGreen)
+        {
+            Destroy(Field.GetChild(0).gameObject);
+
+            GameObject newCard = Instantiate(pref, Field, false);
+            newCard.GetComponent<CardVisual>().SelfCard = new Card(13, "green", "Sprites/UNO/uno_green_wild");
+            newCard.GetComponent<CardVisual>().SetPlayer(Player);
+            newCard.GetComponent<CardVisual>().SetField(Field);
+            ChooseGreen = false;
+        }
+        else if (ChooseYellow)
+        {
+            Destroy(Field.GetChild(0).gameObject);
+
+            GameObject newCard = Instantiate(pref, Field, false);
+            newCard.GetComponent<CardVisual>().SelfCard = new Card(13, "yellow", "Sprites/UNO/uno_yellow_wild");
+            newCard.GetComponent<CardVisual>().SetPlayer(Player);
+            newCard.GetComponent<CardVisual>().SetField(Field);
+            ChooseYellow = false;
+        }
+
+        Destroy(GameObject.FindWithTag("ChooseBlue"));
+        Destroy(GameObject.FindWithTag("ChooseRed"));
+        Destroy(GameObject.FindWithTag("ChooseGreen"));
+        Destroy(GameObject.FindWithTag("ChooseYellow")); 
+    }
+
+    private IEnumerator ChooseWaiter()
+    {
+        while (ChooseTimer-- >= -1)
+        {
+            Timer.text = ChooseTimer.ToString();
+            if (ChooseBlue | ChooseRed | ChooseGreen | ChooseYellow)
+            {
+                ChooseTurn();
+                break;
+            }
+            if (ChooseTimer == -1)
+            {
+                int rand = Random.Range(0, 3);
+
+                if (rand == 0) ChooseBlue = true;
+                else if (rand == 1) ChooseRed = true;
+                else if (rand == 2) ChooseGreen = true;
+                else if (rand == 3) ChooseYellow = true;
+
+                ChooseTurn();
+                break;
+            }
+            yield return new WaitForSeconds(1);
+        }
+        yield return StartCoroutine(TurnWaiter());
+    }
+
+    private IEnumerator TurnWaiter()
+    {
+        while (TurnTimer-- > 0)
+        {
+            Timer.text = TurnTimer.ToString();
+
+            switch (TurnCounter)
+            {
+                case 0:
+                    if (!Field.GetComponent<FieldDrop>().GetMyTurn())
+                    {
+                        Game.Player.RemoveAt(CheckCard(GetCardOnBoard(), Game.Player));
+                        INeedCard = 0;
+                        //Function that rules what is card that player drop mean
+                        Effect();
+                        ChangeTurn();
+                    }
+                    else if (INeedCard == 3)
+                    {
+                        Field.GetComponent<FieldDrop>().SetNotMyTurn();
+                        INeedCard = 0;
+                        ChangeTurn();
+                    }
+                    break;
+                case 1:
+                    if (TurnTimer == 28) Turn(Oponent_1, Game.Op_1);
+                    break;
+                case 2:
+                    if (TurnTimer == 28) Turn(Oponent_2, Game.Op_2);
+                    break;
+                case 3:
+                    if (TurnTimer == 28) Turn(Oponent_3, Game.Op_3);
+                    break;
+                case 4:
+                    if (TurnTimer == 28) Turn(Oponent_4, Game.Op_4);
+                    break;
+                case 5:
+                    if (TurnTimer == 28) Turn(Oponent_5, Game.Op_5);
+                    break;
+                case 6:
+                    if (TurnTimer == 28) Turn(Oponent_6, Game.Op_6);
+                    break;
+                case 7:
+                    if (TurnTimer == 28) Turn(Oponent_7, Game.Op_7);
+                    break;
+            }
+
+            yield return new WaitForSeconds(1);
+        }
+        //If time goes up, turn ends and player get 3 cards
+        GiveCards(3, Player, Game.Player);
+        ChangeTurn();
+    }
+
+    void Turn(Transform whose, List<Card> hand)
+    {
+
+        Card cardOnField = GetCardOnBoard();
+        bool can = false;
+        for (int i = 0; i < hand.Count; i++)
+        {
+            if (hand[i].Number == cardOnField.Number | hand[i].Color == cardOnField.Color)
+            {
+                Destroy(Field.GetChild(0).gameObject);
+                Destroy(whose.GetChild(i).gameObject);
+
+                GameObject newCard = Instantiate(pref, Field, false);
+                newCard.GetComponent<CardVisual>().SelfCard = hand[i];
+                newCard.GetComponent<CardVisual>().SetPlayer(Player);
+                newCard.GetComponent<CardVisual>().SetField(Field);
+
+                //Function that rules what is card that bot drop mean
+                EffectBot(hand[i]);
+
+                Game.Discard.Add(hand[i]);
+                hand.RemoveAt(i);
+                can = true;
+                break;
+            }
+            else if(hand[i].Color == "null")
+            {
+                Destroy(Field.GetChild(0).gameObject);
+                Destroy(whose.GetChild(i).gameObject);
+
+                EffectBot(hand[i]);
+
+                Game.Discard.Add(hand[i]);
+                hand.RemoveAt(i);
+                can = true;
+                break;
+            }
+        }
+        //If bot have not needful card, he draw cards and analising them
+        if (!can)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                GiveCards(1, whose, hand);
+
+                Debug.Log("Draw " + i.ToString());
+
+                int last = hand.Count - 1;
+
+                if (hand[last].Number == cardOnField.Number | hand[last].Color == cardOnField.Color)
+                {
+                    Destroy(Field.GetChild(0).gameObject);
+                    Destroy(whose.GetChild(last).gameObject);
+
+                    GameObject newCard = Instantiate(pref, Field, false);
+                    newCard.GetComponent<CardVisual>().SelfCard = hand[last];
+                    newCard.GetComponent<CardVisual>().SetPlayer(Player);
+                    newCard.GetComponent<CardVisual>().SetField(Field);
+
+                    EffectBot(hand[last]);
+
+                    Game.Discard.Add(hand[last]);
+                    hand.RemoveAt(last);
+                    break;
+                }
+                else if (hand[last].Color == "null")
+                {
+                    Destroy(Field.GetChild(0).gameObject);
+                    Destroy(whose.GetChild(last).gameObject);
+
+                    EffectBot(hand[last]);
+
+                    Game.Discard.Add(hand[last]);
+                    hand.RemoveAt(last);
+                    can = true;
+                    break;
+                }
+            }
+        }
+        ChangeTurn();
+    }
+
+    private void Effect()
+    {
+        Card card = GetCardOnBoard();
+
+        if (card.Number == 10) Draw2 = true;
+        else if (card.Number == 11) Revers = !Revers;
+        else if (card.Number == 12) Skip = true;
+        else if (card.Number == 13) Choose = true;
+        else if (card.Number == 14) { Skip = true; Draw4 = true; Choose = true; }
+    }
+
+    private void EffectBot(Card card)
+    {
+        if (card.Number == 10) Draw2 = true;
+        else if (card.Number == 11) Revers = !Revers;
+        else if (card.Number == 12) Skip = true;
+        else if (card.Number == 13) BotChoose = true;
+        else if (card.Number == 14) { Skip = true; Draw4 = true; BotChoose = true; }
+    }
+
+    private void ShuffleDeck()
+    {
+        Debug.Log("OK");
+        List<Card> newList = new List<Card>();
+        int count = Game.Discard.Count;
+        for (int i = 0; i < count; i++)
+        {
+            int rand = Random.Range(0, Game.Discard.Count - 1);
+            newList.Add(Game.Discard[rand]);
+            Game.Discard.RemoveAt(rand);
+        }
+        Debug.Log(Game.Discard.Count);
+        Debug.Log(Game.Deck.Count);
+        Debug.Log(newList.Count);
+
+        Game.Deck.AddRange(newList);
+        Game.Discard.Clear();
+
+        Debug.Log(Game.Deck.Count);
+    }
+
+    //Function that looks for ID of dropped card in player deck
+    int CheckCard(Card card, List<Card> hand)
+    {
+        for (int i = 0; i < hand.Count; i++)
+        {
+            if (hand[i].Logo == card.Logo)
+            {
+                return i;
+            }
+        }
+        Debug.Log("Not OK");
+        return 99;
+    }
+
+    Card GetCardOnBoard()
+    {
+        return Field.GetChild(0).gameObject.GetComponent<CardVisual>().SelfCard;
+    }
+
+    //Function foe debug only
+    string GetCardsFromList(List<Card> hand)
+    {
+        string str = "";
+        for (int i = 0; i < hand.Count; i++)
+        {
+            str += hand[i].Logo;
+            str += "\n";
+        }
+        return str;
     }
 
     public Transform GetPlayerByTurn(int turn)
@@ -344,181 +682,10 @@ public class Deck : MonoBehaviour
         }
     }
 
-    private IEnumerator TurnWaiter()
-    {
-        while (TurnTimer-- > 0)
-        {
-            Timer.text = TurnTimer.ToString();
-
-            switch (TurnCounter)
-            {
-                case 0:
-                    if (!Field.GetComponent<FieldDrop>().GetMyTurn())
-                    {
-                        Game.Player.RemoveAt(CheckCard(GetCardOnBoard(), Game.Player));
-                        INeedCard = 0;
-                        Effect();
-                        ChangeTurn();
-                    }
-                    else if (INeedCard == 3)
-                    {
-                        Field.GetComponent<FieldDrop>().SetNotMyTurn();
-                        INeedCard = 0;
-                        ChangeTurn();
-                    }
-                    break;
-                case 1:
-                    if (TurnTimer == 25) Turn(Oponent_1, Game.Op_1);
-                    break;
-                case 2:
-                    if (TurnTimer == 25) Turn(Oponent_2, Game.Op_2);
-                    break;
-                case 3:
-                    if (TurnTimer == 25) Turn(Oponent_3, Game.Op_3);
-                    break;
-                case 4:
-                    if (TurnTimer == 25) Turn(Oponent_4, Game.Op_4);
-                    break;
-                case 5:
-                    if (TurnTimer == 25) Turn(Oponent_5, Game.Op_5);
-                    break;
-                case 6:
-                    if (TurnTimer == 25) Turn(Oponent_6, Game.Op_6);
-                    break;
-                case 7:
-                    if (TurnTimer == 25) Turn(Oponent_7, Game.Op_7);
-                    break;
-            }
-
-            yield return new WaitForSeconds(1);
-        }
-        GiveCards(3, Player, Game.Player);
-        ChangeTurn();
-    }
-
-    private void Effect()
-    {
-        Card card = GetCardOnBoard();
-
-        if (card.Number == 10) Draw2 = true;
-        else if (card.Number == 11) Revers = !Revers;
-        else if (card.Number == 12) Skip = true;
-        else if (card.Number == 13) Choose = true;
-        else if (card.Number == 14) { Skip = true; Draw4 = true; Choose = true; }
-    }
-
-    private void EffectBot(Card card)
-    {
-        if (card.Number == 10) Draw2 = true;
-        else if (card.Number == 11) Revers = !Revers;
-        else if (card.Number == 12) Skip = true;
-        else if (card.Number == 13) Choose = true;
-        else if (card.Number == 14) { Skip = true; Draw4 = true; Choose = true; }
-    }
-
-    private void ShuffleDeck()
-    {
-        Debug.Log("OK");
-        List<Card> newList = new List<Card>();
-        int count = Game.Discard.Count;
-        for (int i = 0; i < count; i++)
-        {
-            int rand = Random.Range(0, Game.Discard.Count - 1);
-            newList.Add(Game.Discard[rand]);
-            Game.Discard.RemoveAt(rand);
-        }
-        Debug.Log(Game.Discard.Count);
-        Debug.Log(Game.Deck.Count);
-        Debug.Log(newList.Count);
-
-        Game.Deck.AddRange(newList);
-        Game.Discard.Clear();
-
-        Debug.Log(Game.Deck.Count);
-    }
-
-    int CheckCard(Card card, List<Card> hand)
-    {
-        for (int i = 0; i < hand.Count; i++)
-        {
-            if (hand[i].Logo == card.Logo)
-            {
-                return i;
-            }
-        }
-        Debug.Log("Not OK");
-        return 99;
-    }
-
-    Card GetCardOnBoard()
-    {
-        return Field.GetChild(0).gameObject.GetComponent<CardVisual>().SelfCard;
-    }
-
-    string GetCardsFromList(List<Card> hand)
-    {
-        string str = "";
-        for (int i = 0; i < hand.Count; i++)
-        {
-            str += hand[i].Logo;
-            str += "\n";
-        }
-        return str;
-    }
-
-    void Turn(Transform whose, List<Card> hand)
-    {
-
-        Card cardOnField = GetCardOnBoard();
-        bool can = false;
-        for (int i = 0; i < hand.Count; i++)
-        {
-            if (hand[i].Number == cardOnField.Number | hand[i].Color == cardOnField.Color)
-            {
-                Destroy(Field.GetChild(0).gameObject);
-                Destroy(whose.GetChild(i).gameObject);
-
-                GameObject newCard = Instantiate(pref, Field, false);
-                newCard.GetComponent<CardVisual>().SelfCard = hand[i];
-                newCard.GetComponent<CardVisual>().SetPlayer(Player);
-                newCard.GetComponent<CardVisual>().SetField(Field);
-
-                EffectBot(hand[i]);
-
-                Game.Discard.Add(hand[i]);
-                hand.RemoveAt(i);
-                can = true;
-                break;
-            }
-        }
-        if (!can)
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                GiveCards(1, whose, hand);
-                
-                int last = hand.Count - 1;
-
-                if (hand[last].Number == cardOnField.Number | hand[last].Color == cardOnField.Color)
-                {
-                    Destroy(Field.GetChild(0).gameObject);
-                    Destroy(whose.GetChild(last).gameObject);
-
-                    GameObject newCard = Instantiate(pref, Field, false);
-                    newCard.GetComponent<CardVisual>().SelfCard = hand[last];
-                    newCard.GetComponent<CardVisual>().SetPlayer(Player);
-                    newCard.GetComponent<CardVisual>().SetField(Field);
-
-                    EffectBot(hand[last]);
-
-                    Game.Discard.Add(hand[last]);
-                    hand.RemoveAt(last);
-                    break;
-                }
-            }
-        }
-        ChangeTurn();
-    }
+    public void SetBlue() { ChooseBlue = true; }
+    public void SetRed() { ChooseRed = true; }
+    public void SetGreen() { ChooseGreen = true; }
+    public void SetYellow() { ChooseYellow = true; }
 
     void GiveCards(int amount, Transform toWhom, List<Card> hand)
     {
